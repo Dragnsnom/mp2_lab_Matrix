@@ -13,7 +13,7 @@ class TVector
 {
 protected:
   ValType* pVector;
-  int Size;
+  int SizeM;
 public:
   TVector();
   TVector(int _v);
@@ -21,7 +21,7 @@ public:
   TVector(const TVector& v);                // конструктор копирования
   virtual ~TVector();
 
-  int GetSize() { return Size; }            // размер вектора
+  int GetSize() { return SizeM; }            // размер вектора
 
   ValType& operator[](int pos);              // доступ
   bool operator==(const TVector& v) const;  // сравнение
@@ -41,14 +41,19 @@ public:
    // ввод-вывод
   friend istream& operator>>(istream& in, TVector& v)
   {
-    for (int i = 0; i < v.Size; i++)
-      in >> v.pVector[i];
+      for (int i = 0; i < v.SizeM; i++)
+      {
+          in >> v.pVector[i];
+      }
     return in;
   }
+
   friend ostream& operator<<(ostream& out, const TVector& v)
   {
-    for (int i = 0; i < v.Size; i++)
-      out << v.pVector[i] << '\t';
+      for (int i = 0; i < v.SizeM; i++)
+      {
+          out << v.pVector[i] << '\t';
+      }
     return out;
   }
 };
@@ -56,7 +61,7 @@ public:
 template<class ValType>
 inline TVector<ValType> :: TVector()
 {
-  Size = NULL;
+  SizeM = NULL;
 }
 
 template<class ValType>
@@ -67,10 +72,10 @@ TVector<ValType>::TVector(int v)
       throw  logic_error("ERROR");
   }
 
-  Size = v;
-  pVector = new ValType[Size];
+  SizeM = v;
+  pVector = new ValType[SizeM];
 
-  for (int i = 0; i < Size; i++)
+  for (int i = 0; i < SizeM; i++)
   {
     pVector[i] = v;
   }
@@ -82,12 +87,13 @@ TVector<ValType>::TVector(int s, int si)
 {
   if (si < 0)
   {
-    throw "Error";
+      throw  logic_error("ERROR");
   }
-  Size = s;
-  pVector = new ValType[Size];
 
-  for (int i = 0; i < Size; i++)
+  SizeM = s;
+  pVector = new ValType[SizeM];
+
+  for (int i = 0; i < SizeM; i++)
   {
     pVector[i] = si;
   }
@@ -96,9 +102,10 @@ TVector<ValType>::TVector(int s, int si)
 template <class ValType> //конструктор копирования
 TVector<ValType>::TVector(const TVector<ValType>& v)
 {
-  Size = v.Size;
-  pVector = new ValType[Size];
-  for (int i = 0; i < Size; i++)
+  SizeM = v.SizeM;
+  pVector = new ValType[SizeM];
+
+  for (int i = 0; i < SizeM; i++)
   {
     pVector[i] = v.pVector[i];
   }
@@ -107,23 +114,25 @@ TVector<ValType>::TVector(const TVector<ValType>& v)
 template <class ValType>
 TVector<ValType>::~TVector()
 {
-  Size = 0;
+  SizeM = NULL;
+
   if (pVector != 0)
   {
     delete[] pVector;
   }
-  pVector = 0;
+
+  pVector = NULL;
 }
 
 template <class ValType> // доступ
 ValType& TVector<ValType>::operator[](int index)
 {
-  if (index < 0 || index > Size)
+  if (index < 0 || index > SizeM)
   {
       throw  logic_error("ERROR");
   }
 
-  if ((index >= 0) && (index < Size))
+  if ((index >= 0) && (index < SizeM))
   {
     return pVector[index];
   }
@@ -135,12 +144,12 @@ template <class ValType> // сравнение
 bool TVector<ValType>::operator==(const TVector& v) const
 {
   bool res = true;
-  if (Size != v.Size)
+  if (SizeM != v.SizeM)
   {
     res = false;
   }
 
-  for (int i = 0; i < Size; i++)
+  for (int i = 0; i < SizeM; i++)
   {
     if (pVector[i] != v.pVector[i])
     {
@@ -158,10 +167,10 @@ TVector<ValType>& TVector<ValType>::operator=(const TVector& v)
     return *this;
   }
 
-  Size = v.Size;
-  pVector = new ValType[Size];
+  SizeM = v.SizeM;
+  pVector = new ValType[SizeM];
 
-  for (int i = 0; i < Size; i++)
+  for (int i = 0; i < SizeM; i++)
   {
     pVector[i] = v.pVector[i];
   }
@@ -172,10 +181,10 @@ template <class ValType> //прибавить
 TVector<ValType> TVector<ValType>::operator+(const ValType& val)
 {
   TVector<ValType> res;
-  res.Size = Size;
-  res.pVector = new ValType[res.Size];
+  res.SizeM = SizeM;
+  res.pVector = new ValType[res.SizeM];
 
-  for (int i = 0; i < res.Size; i++)
+  for (int i = 0; i < res.SizeM; i++)
   {
     res.pVector[i] = pVector[i] + val;
   }
@@ -186,10 +195,10 @@ template <class ValType> //вычесть
 TVector<ValType> TVector<ValType>::operator-(const ValType& val)
 {
   TVector<ValType> res;
-  res.Size = Size;
-  res.pVector = new ValType[res.Size];
+  res.SizeM = SizeM;
+  res.pVector = new ValType[res.SizeM];
 
-  for (int i = 0; i < res.Size; i++)
+  for (int i = 0; i < res.SizeM; i++)
   {
     res.pVector[i] = pVector[i] - val;
   }
@@ -200,10 +209,10 @@ template <class ValType> //умножить
 TVector<ValType> TVector<ValType>::operator*(const ValType& val)
 {
   TVector<ValType> res;
-  res.Size = Size;
-  res.pVector = new ValType[res.Size];
+  res.SizeM = SizeM;
+  res.pVector = new ValType[res.SizeM];
 
-  for (int i = 0; i < res.Size; i++)
+  for (int i = 0; i < res.SizeM; i++)
   {
     res.pVector[i] = pVector[i] * val;
   }
@@ -214,10 +223,10 @@ template<class ValType>
 inline TVector<ValType> TVector<ValType>::operator/(const ValType& val)
 {
   TVector<ValType> res;
-  res.Size = Size;
-  res.pVector = new ValType[res.Size];
+  res.SizeM = SizeM;
+  res.pVector = new ValType[res.SizeM];
 
-  for (int i = 0; i < res.Size; i++)
+  for (int i = 0; i < res.SizeM; i++)
   {
     res.pVector[i] = pVector[i] / val;
   }
@@ -227,15 +236,16 @@ inline TVector<ValType> TVector<ValType>::operator/(const ValType& val)
 template <class ValType> //сложение
 TVector<ValType> TVector<ValType>::operator+(const TVector<ValType>& v)
 {
-  if (v.Size != Size)
+  if (v.SizeM != SizeM)
   {
       throw  logic_error("ERROR");
   }
-  TVector<ValType> res;
-  res.Size = Size;
-  res.pVector = new ValType[res.Size];
 
-  for (int i = 0; i < res.Size; i++)
+  TVector<ValType> res;
+  res.SizeM = SizeM;
+  res.pVector = new ValType[res.SizeM];
+
+  for (int i = 0; i < res.SizeM; i++)
   {
     res.pVector[i] = pVector[i] + v.pVector[i];
   }
@@ -245,15 +255,16 @@ TVector<ValType> TVector<ValType>::operator+(const TVector<ValType>& v)
 template <class ValType> //вычитание
 TVector<ValType> TVector<ValType>::operator-(const TVector<ValType>& v)
 {
-  if (v.Size != Size)
+  if (v.SizeM != SizeM)
   {
       throw  logic_error("ERROR");
   }
-  TVector<ValType> res;
-  res.Size = Size;
-  res.pVector = new ValType[res.Size];
 
-  for (int i = 0; i < res.Size; i++)
+  TVector<ValType> res;
+  res.SizeM = SizeM;
+  res.pVector = new ValType[res.SizeM];
+
+  for (int i = 0; i < res.SizeM; i++)
   {
     res.pVector[i] = pVector[i] - v.pVector[i];
   }
@@ -263,15 +274,16 @@ TVector<ValType> TVector<ValType>::operator-(const TVector<ValType>& v)
 template <class ValType> //скалярное произведение
 TVector<ValType> TVector<ValType> ::operator*(const TVector<ValType>& v)
 {
-  if (v.Size != Size)
+  if (v.SizeM != SizeM)
   {
       throw  logic_error("ERROR");
   }
-  TVector<ValType> res;
-  res.Size = Size;
-  res.pVector = new ValType[res.Size];
 
-  for (int i = 0; i < res.Size; i++)
+  TVector<ValType> res;
+  res.SizeM = SizeM;
+  res.pVector = new ValType[res.SizeM];
+
+  for (int i = 0; i < res.SizeM; i++)
   {
     res.pVector[i] = pVector[i] * v.pVector[i];
   }
