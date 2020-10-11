@@ -6,7 +6,7 @@ before_script:
   - mkdir ../build
   - cd ../build
 script:
-  - cmake ../Matrix
+  - cmake ../mp2_lab
   - make -j
   - cd ./test/
   - ./Matrix_Test.
