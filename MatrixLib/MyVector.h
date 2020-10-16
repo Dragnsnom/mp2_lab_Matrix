@@ -167,6 +167,7 @@ TVector<ValType>& TVector<ValType>::operator=(const TVector& v)
     return *this;
   }
 
+  SizeM = NULL;
   SizeM = v.SizeM;
   pVector = new ValType[SizeM];
 
@@ -174,6 +175,7 @@ TVector<ValType>& TVector<ValType>::operator=(const TVector& v)
   {
     pVector[i] = v.pVector[i];
   }
+
   return *this;
 }
 
